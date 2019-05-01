@@ -9,6 +9,18 @@
 int main(void)
 {
     // Your code here
+    int x = 0;
+
+    int rc = fork();
+    if (rc < 0) {
+        fprintf(stderr, "fork failed\n");
+    } else if(rc == 0) {
+        x = 10;
+        printf("hello, child here (pid: %d) (x: %d) \n", (int) getpid(), x);
+    } else {
+        x = 100;
+        printf("hello, parent here (pid: %d) of child %d (x: %d)\n", (int) getpid(), rc, x);
+    }
 
     return 0;
 }
