@@ -5,21 +5,28 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
+#include <string.h>
+
+//the file (probably) has some kind of lock on it so it makes it so they go one at a time. (maybe?)
 
 int main(void)
 {
 
     FILE *fp;
+
+    fp = fopen("text.txt", "w");
     // Your code here 
     int rc = fork();
     if (rc < 0) {
         fprintf(stderr, "fork failed\n");
     } else if (rc == 0) {
-        fp = fopen("\\text.txt", "w+");
-        fprintf(fp, "Child");
+        printf("child process here\n");
+        char *child_str = "This is child string!\n";
+        fwrite(child_str, sizeof(char), strlen(child_str), fp);
     } else {
-        fp = fopen("\\text.txt", "w+");
-        fprintf(fp, "Parent");
+        printf("parent process here\n");
+        char *parent_str = "This is parent string.\n";
+        fwrite(parent_str, sizeof(char), strlen(parent_str), fp);
     }
     
     return 0;
